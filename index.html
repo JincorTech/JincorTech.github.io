@@ -45,26 +45,30 @@
       this.bg = this.add.tileSprite(0, 0, 1024, 1024, 'space').setOrigin(0);
       player = this.physics.add.sprite(512, 800, 'ship');
 
+      //  Player physics properties
+      player.setCollideWorldBounds(true);
+
       //  Input Events
       cursors = this.input.keyboard.createCursorKeys();
     }
 
-    const PlayerRotationSpeed = 5;
+    const PlayerRotationSpeed = 3;
+    const BgSpeed = 50;
 
     function update() {
-      this.bg.tilePositionY -= 50;
+      this.bg.tilePositionY -= BgSpeed;
 
       if (cursors.left.isDown) {
         player.setVelocityX(-1000);
 
-        if (player.angle >= -15) {
+        if (player.angle >= -10) {
           player.angle -= PlayerRotationSpeed;
         }
       }
       else if (cursors.right.isDown) {
         player.setVelocityX(1000);
 
-        if (player.angle <= 15) {
+        if (player.angle <= 10) {
           player.angle += PlayerRotationSpeed;
         }
       }
