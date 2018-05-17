@@ -44,10 +44,38 @@
     function create() {
       this.bg = this.add.tileSprite(0, 0, 1024, 1024, 'space').setOrigin(0);
       player = this.physics.add.sprite(512, 800, 'ship');
+
+      //  Input Events
+      cursors = this.input.keyboard.createCursorKeys();
     }
 
+    const PlayerRotationSpeed = 5;
+
     function update() {
-      this.bg.tilePositionY -= 5;
+      this.bg.tilePositionY -= 50;
+
+      if (cursors.left.isDown) {
+        player.setVelocityX(-1000);
+
+        if (player.angle >= -15) {
+          player.angle -= PlayerRotationSpeed;
+        }
+      }
+      else if (cursors.right.isDown) {
+        player.setVelocityX(1000);
+
+        if (player.angle <= 15) {
+          player.angle += PlayerRotationSpeed;
+        }
+      }
+      else {
+        player.setVelocityX(0);
+        if (player.angle < 0) {
+          player.angle += PlayerRotationSpeed
+        } else if (player.angle > 0) {
+          player.angle -= PlayerRotationSpeed
+        }
+      }
     }
 
   </script>
