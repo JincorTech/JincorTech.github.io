@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Crypto Race Demo</title>
+  <script src="//cdn.jsdelivr.net/npm/phaser@3.7.1/dist/phaser.js"></script>
+  <style type="text/css">
+    body {
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <script type="text/javascript">
+
+    var config = {
+      type: Phaser.AUTO,
+      width: 1024,
+      height: 1024,
+      physics: {
+        default: 'arcade',
+        arcade: {
+          gravity: { y: 0 },
+          debug: false
+        }
+      },
+      scene: {
+        preload: preload,
+        create: create,
+        update: update
+      }
+    };
+
+    var game = new Phaser.Game(config);
+
+    function preload() {
+      this.load.image('space', 'assets/background.jpg');
+      this.load.spritesheet('ship', 'assets/ship_1.png', { frameWidth: 276, frameHeight: 255 });
+    }
+
+    function create() {
+      this.bg = this.add.tileSprite(0, 0, 1024, 1024, 'space').setOrigin(0);
+      player = this.physics.add.sprite(512, 800, 'ship');
+    }
+
+    function update() {
+      this.bg.tilePositionY -= 5;
+    }
+
+  </script>
+
+</body>
+
+</html>
