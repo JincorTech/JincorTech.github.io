@@ -52,23 +52,25 @@
       cursors = this.input.keyboard.createCursorKeys();
     }
 
+    const PlayerSpeed = 1000;
     const PlayerRotationSpeed = 3;
+    const PlayerRotationAngle = 10;
     const BgSpeed = 50;
 
     function update() {
       this.bg.tilePositionY -= BgSpeed;
 
       if (cursors.left.isDown) {
-        player.setVelocityX(-1000);
+        player.setVelocityX(-1 * PlayerSpeed);
 
-        if (player.angle >= -10) {
+        if (player.angle >= -1 * PlayerRotationAngle) {
           player.angle -= PlayerRotationSpeed;
         }
       }
       else if (cursors.right.isDown) {
-        player.setVelocityX(1000);
+        player.setVelocityX(PlayerSpeed);
 
-        if (player.angle <= 10) {
+        if (player.angle <= PlayerRotationAngle) {
           player.angle += PlayerRotationSpeed;
         }
       }
