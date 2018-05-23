@@ -16,10 +16,13 @@
 
   <script type="text/javascript">
 
+    var screenWidth = 1024;
+    var screenHeight = 1024;
+
     var config = {
       type: Phaser.AUTO,
-      width: 1024,
-      height: 1024,
+      width: screenWidth,
+      height: screenHeight,
       physics: {
         default: 'arcade',
         arcade: {
@@ -47,11 +50,11 @@
     }
 
     function create() {
-      this.bg = this.add.tileSprite(0, 0, 1024, 1024, 'space').setOrigin(0);
-      this.bgComet1 = this.add.tileSprite(0, 0, 1024, 1024, 'bgComet1').setOrigin(0);
-      this.bgComet2 = this.add.tileSprite(0, 0, 1024, 1024, 'bgComet2').setOrigin(0);
-      this.bgComet3 = this.add.tileSprite(0, 0, 1024, 1024, 'bgComet3').setOrigin(0);
-      this.bgComet4 = this.add.tileSprite(0, 0, 1024, 1024, 'bgComet4').setOrigin(0);
+      this.bg = this.add.tileSprite(0, 0, screenWidth, screenHeight, 'space').setOrigin(0);
+      this.bgComet1 = this.add.tileSprite(0, 0, screenWidth, screenHeight, 'bgComet1').setOrigin(0);
+      this.bgComet2 = this.add.tileSprite(0, 0, screenWidth, screenHeight, 'bgComet2').setOrigin(0);
+      this.bgComet3 = this.add.tileSprite(0, 0, screenWidth, screenHeight, 'bgComet3').setOrigin(0);
+      this.bgComet4 = this.add.tileSprite(0, 0, screenWidth, screenHeight, 'bgComet4').setOrigin(0);
 
       player = this.physics.add.sprite(512, 800, 'ship');
 
