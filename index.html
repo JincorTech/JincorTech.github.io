@@ -40,7 +40,60 @@
     var game = new Phaser.Game(config);
 
     function preloadShip() {
+      this.load.image('body', 'assets/ship/body.png');
+      this.load.image('engine_left', 'assets/ship/engine_left.png');
+      this.load.image('engine_right', 'assets/ship/engine_right.png');
+      this.load.image('engine', 'assets/ship/engine.png');
+      this.load.image('glass', 'assets/ship/glass.png');
+      this.load.image('left_gun', 'assets/ship/left_gun.png');
+      this.load.image('line', 'assets/ship/line.png');
+      this.load.image('right_gun', 'assets/ship/right_gun.png');
+      this.load.image('sharp_left', 'assets/ship/sharp_left.png');
+      this.load.image('sharp_right', 'assets/ship/sharp_right.png');
+      this.load.image('spot', 'assets/ship/spot.png');
+    }
 
+    function addShip() {
+      var shipPosition = {x: 512, y: 800};
+
+      this.ship = {
+        engineLeft: this.physics.add.sprite(shipPosition.x - 155, shipPosition.y + 110, 'engine_left'),
+        engineRight: this.physics.add.sprite(shipPosition.x + 155, shipPosition.y + 110, 'engine_right'),
+        body: this.physics.add.sprite(shipPosition.x, shipPosition.y, 'body'),
+        glass: this.physics.add.sprite(shipPosition.x, shipPosition.y + 20, 'glass'),
+      }
+
+      // this.ship.body.setCollideWorldBounds(true);
+
+      this.shipGroup = this.add.group();
+      this.shipGroup.add(this.ship.body);
+      this.shipGroup.add(this.ship.engineLeft);
+      this.shipGroup.add(this.ship.engineRight);
+      this.shipGroup.add(this.ship.glass);
+      // this.group.scale.set(2, 2)
+    }
+
+    function shipSetVelocityX(velocity) {
+      this.ship.engineLeft.setVelocityX(velocity);
+      this.ship.engineRight.setVelocityX(velocity);
+      this.ship.body.setVelocityX(velocity);
+      this.ship.glass.setVelocityX(velocity);
+    }
+
+    function updateShip() {
+      shipSetVelocityX = shipSetVelocityX.bind(this);
+
+      if (cursors.left.isDown) {
+        shipSetVelocityX(-1 * PlayerSpeed);
+
+        this.ship.engineLeft.setDisplaySize(this.ship.engineRight.displayWidth - 10, this.ship.engineRight.displayHeight - 1)
+      }
+      else if (cursors.right.isDown) {
+        shipSetVelocityX(PlayerSpeed);
+      }
+      else {
+        shipSetVelocityX(0);
+      }
     }
 
     function preload() {
@@ -51,7 +104,7 @@
       this.load.image('bgComet3', 'assets/bg_comet_3.png');
       this.load.image('bgComet4', 'assets/bg_comet_4.png');
 
-      this.load.spritesheet('ship', 'assets/ship_1.png', { frameWidth: 276, frameHeight: 255 });
+      preloadShip.bind(this)();
     }
 
     function create() {
@@ -62,10 +115,11 @@
       this.bgComet3 = this.add.tileSprite(0, 0, screenWidth, screenHeight, 'bgComet3').setOrigin(0);
       this.bgComet4 = this.add.tileSprite(0, 0, screenWidth, screenHeight, 'bgComet4').setOrigin(0);
 
-      player = this.physics.add.sprite(512, 800, 'ship');
+      addShip.bind(this)();
+      // player = this.physics.add.sprite(512, 800, 'ship');
 
-      //  Player physics properties
-      player.setCollideWorldBounds(true);
+      // //  Player physics properties
+      // player.setCollideWorldBounds(true);
 
       //  Input Events
       cursors = this.input.keyboard.createCursorKeys();
@@ -87,28 +141,7 @@
       this.bgComet4.tilePositionY -= 4;
       this.bgComet4.tilePositionX += 0.02;
 
-      if (cursors.left.isDown) {
-        player.setVelocityX(-1 * PlayerSpeed);
-
-        if (player.angle >= -1 * PlayerRotationAngle) {
-          player.angle -= PlayerRotationSpeed;
-        }
-      }
-      else if (cursors.right.isDown) {
-        player.setVelocityX(PlayerSpeed);
-
-        if (player.angle <= PlayerRotationAngle) {
-          player.angle += PlayerRotationSpeed;
-        }
-      }
-      else {
-        player.setVelocityX(0);
-        if (player.angle < 0) {
-          player.angle += PlayerRotationSpeed
-        } else if (player.angle > 0) {
-          player.angle -= PlayerRotationSpeed
-        }
-      }
+      updateShip.bind(this)();
     }
 
   </script>
