@@ -38,11 +38,21 @@
 
     function preload() {
       this.load.image('space', 'assets/background.jpg');
+      this.load.image('bgComet1', 'assets/bg_comet_1.png');
+      this.load.image('bgComet2', 'assets/bg_comet_2.png');
+      this.load.image('bgComet3', 'assets/bg_comet_3.png');
+      this.load.image('bgComet4', 'assets/bg_comet_4.png');
+
       this.load.spritesheet('ship', 'assets/ship_1.png', { frameWidth: 276, frameHeight: 255 });
     }
 
     function create() {
       this.bg = this.add.tileSprite(0, 0, 1024, 1024, 'space').setOrigin(0);
+      this.bgComet1 = this.add.tileSprite(0, 0, 1024, 1024, 'bgComet1').setOrigin(0);
+      this.bgComet2 = this.add.tileSprite(0, 0, 1024, 1024, 'bgComet2').setOrigin(0);
+      this.bgComet3 = this.add.tileSprite(0, 0, 1024, 1024, 'bgComet3').setOrigin(0);
+      this.bgComet4 = this.add.tileSprite(0, 0, 1024, 1024, 'bgComet4').setOrigin(0);
+
       player = this.physics.add.sprite(512, 800, 'ship');
 
       //  Player physics properties
@@ -55,10 +65,18 @@
     const PlayerSpeed = 1000;
     const PlayerRotationSpeed = 3;
     const PlayerRotationAngle = 10;
-    const BgSpeed = 50;
+    const BgSpeed = 0.5;
 
     function update() {
       this.bg.tilePositionY -= BgSpeed;
+      this.bgComet1.tilePositionY -= 2;
+      this.bgComet1.tilePositionX -= 0.02;
+      this.bgComet2.tilePositionY -= 3;
+      this.bgComet2.tilePositionX += 0.04;
+      this.bgComet3.tilePositionY -= 1;
+      this.bgComet3.tilePositionX -= 0.03;
+      this.bgComet4.tilePositionY -= 4;
+      this.bgComet4.tilePositionX += 0.02;
 
       if (cursors.left.isDown) {
         player.setVelocityX(-1 * PlayerSpeed);
