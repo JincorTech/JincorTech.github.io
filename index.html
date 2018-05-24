@@ -125,15 +125,15 @@
       }
       else {
         shipSetVelocityX(0);
-        if (ship.engineLeft.displayWidth <= shipSize.engineLeft.w) {
+        if (shipSize.engineLeft.w - ship.engineLeft.displayWidth >= 1) {
           ship.engineLeft.setDisplaySize(ship.engineLeft.displayWidth + ship.engineLeft.displayWidth / shipScaleFactor, ship.engineLeft.displayHeight + ship.engineLeft.displayHeight / shipScaleFactor)
-        } else if (ship.engineLeft.displayWidth >= shipSize.engineLeft.w) {
+        } else if (ship.engineLeft.displayWidth - shipSize.engineLeft.w >= 1) {
           ship.engineLeft.setDisplaySize(ship.engineLeft.displayWidth - ship.engineLeft.displayWidth / shipScaleFactor, ship.engineLeft.displayHeight - ship.engineLeft.displayHeight / shipScaleFactor)
         }
 
-        if (ship.engineRight.displayWidth <= shipSize.engineRight.w) {
+        if (shipSize.engineRight.w - ship.engineRight.displayWidth  >= 1) {
           ship.engineRight.setDisplaySize(ship.engineRight.displayWidth + ship.engineRight.displayWidth / shipScaleFactor, ship.engineRight.displayHeight + ship.engineRight.displayHeight / shipScaleFactor)
-        } else if (ship.engineRight.displayWidth >= shipSize.engineRight.w) {
+        } else if (ship.engineRight.displayWidth - shipSize.engineRight.w >= 1) {
           ship.engineRight.setDisplaySize(ship.engineRight.displayWidth - ship.engineRight.displayWidth / shipScaleFactor, ship.engineRight.displayHeight - ship.engineRight.displayHeight / shipScaleFactor)
         }
 
