@@ -39,6 +39,8 @@
 
     var game = new Phaser.Game(config);
 
+    var shipSize;
+
     function preloadShip() {
       this.load.image('body', 'assets/ship/body.png');
       this.load.image('engine_left', 'assets/ship/engine_left.png');
@@ -65,12 +67,21 @@
 
       // this.ship.body.setCollideWorldBounds(true);
 
-      this.shipGroup = this.add.group();
-      this.shipGroup.add(this.ship.body);
-      this.shipGroup.add(this.ship.engineLeft);
-      this.shipGroup.add(this.ship.engineRight);
-      this.shipGroup.add(this.ship.glass);
-      // this.group.scale.set(2, 2)
+      // this.shipGroup = this.add.group();
+      // this.shipGroup.add(this.ship.body);
+      // this.shipGroup.add(this.ship.engineLeft);
+      // this.shipGroup.add(this.ship.engineRight);
+      // this.shipGroup.add(this.ship.glass);
+      // this.shipGroup.setDisplaySize(100, 100);
+
+      var ship = this.ship;
+
+      shipSize = {
+        engineLeft: {w: ship.engineLeft.displayWidth, h: ship.engineLeft.displayHeight},
+        engineRight: {w: ship.engineRight.displayWidth, h: ship.engineRight.displayHeight},
+        body: {w: ship.body.displayWidth, h: ship.body.displayHeight},
+        glass: {w: ship.glass.displayWidth, h: ship.glass.displayHeight}
+      }
     }
 
     function shipSetVelocityX(velocity) {
@@ -80,19 +91,57 @@
       this.ship.glass.setVelocityX(velocity);
     }
 
+    var shipScaleFactor = 15;
+
     function updateShip() {
+      var GlassLimit = 30;
+      var GlassSpeed = 6;
+
+      var ship = this.ship;
+
       shipSetVelocityX = shipSetVelocityX.bind(this);
 
       if (cursors.left.isDown) {
         shipSetVelocityX(-1 * PlayerSpeed);
+        if (ship.engineLeft.displayWidth >= shipSize.engineLeft.w / 1.3) {
+          ship.engineLeft.setDisplaySize(ship.engineLeft.displayWidth - ship.engineLeft.displayWidth / shipScaleFactor, ship.engineLeft.displayHeight - ship.engineLeft.displayHeight / shipScaleFactor)
+          ship.engineRight.setDisplaySize(ship.engineRight.displayWidth + ship.engineRight.displayWidth / shipScaleFactor, ship.engineRight.displayHeight + ship.engineRight.displayHeight / shipScaleFactor)
+        }
 
-        this.ship.engineLeft.setDisplaySize(this.ship.engineRight.displayWidth - 10, this.ship.engineRight.displayHeight - 1)
+        if (ship.body.x - ship.glass.x <= GlassLimit) {
+          ship.glass.x -= GlassSpeed;
+        }
       }
       else if (cursors.right.isDown) {
         shipSetVelocityX(PlayerSpeed);
+        if (ship.engineRight.displayWidth >= shipSize.engineRight.w / 1.3) {
+          ship.engineLeft.setDisplaySize(ship.engineLeft.displayWidth + ship.engineLeft.displayWidth / shipScaleFactor, ship.engineLeft.displayHeight + ship.engineLeft.displayHeight / shipScaleFactor)
+          ship.engineRight.setDisplaySize(ship.engineRight.displayWidth - ship.engineRight.displayWidth / shipScaleFactor, ship.engineRight.displayHeight - ship.engineRight.displayHeight / shipScaleFactor)
+        }
+
+        if (ship.glass.x - ship.body.x <= GlassLimit) {
+          ship.glass.x += GlassSpeed;
+        }
       }
       else {
         shipSetVelocityX(0);
+        if (ship.engineLeft.displayWidth <= shipSize.engineLeft.w) {
+          ship.engineLeft.setDisplaySize(ship.engineLeft.displayWidth + ship.engineLeft.displayWidth / shipScaleFactor, ship.engineLeft.displayHeight + ship.engineLeft.displayHeight / shipScaleFactor)
+        } else if (ship.engineLeft.displayWidth >= shipSize.engineLeft.w) {
+          ship.engineLeft.setDisplaySize(ship.engineLeft.displayWidth - ship.engineLeft.displayWidth / shipScaleFactor, ship.engineLeft.displayHeight - ship.engineLeft.displayHeight / shipScaleFactor)
+        }
+
+        if (ship.engineRight.displayWidth <= shipSize.engineRight.w) {
+          ship.engineRight.setDisplaySize(ship.engineRight.displayWidth + ship.engineRight.displayWidth / shipScaleFactor, ship.engineRight.displayHeight + ship.engineRight.displayHeight / shipScaleFactor)
+        } else if (ship.engineRight.displayWidth >= shipSize.engineRight.w) {
+          ship.engineRight.setDisplaySize(ship.engineRight.displayWidth - ship.engineRight.displayWidth / shipScaleFactor, ship.engineRight.displayHeight - ship.engineRight.displayHeight / shipScaleFactor)
+        }
+
+        if (0.1 <= ship.body.x - ship.glass.x && ship.glass.x - ship.body.x <= 0.1) {
+          ship.glass.x += GlassSpeed;
+        } else if (0.1 <= ship.glass.x - ship.body.x && ship.body.x - ship.glass.x <= 0.1) {
+          ship.glass.x -= GlassSpeed;
+        }
       }
     }
 
