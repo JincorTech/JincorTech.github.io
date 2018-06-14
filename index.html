@@ -47,6 +47,8 @@
       this.load.image('bgComet2', 'assets/bg_comet_2.png');
       this.load.image('bgComet3', 'assets/bg_comet_3.png');
       this.load.image('bgComet4', 'assets/bg_comet_4.png');
+
+      this.load.spritesheet('ship1', 'assets/ship1.png', { frameWidth: 810, frameHeight: 825 });
     }
 
     function create() {
@@ -57,10 +59,30 @@
       this.bgComet3 = this.add.tileSprite(0, 0, screenWidth, screenHeight, 'bgComet3').setOrigin(0);
       this.bgComet4 = this.add.tileSprite(0, 0, screenWidth, screenHeight, 'bgComet4').setOrigin(0);
 
-      // player = this.physics.add.sprite(512, 800, 'ship');
+      player = this.physics.add.sprite(500, 700, 'ship1');
+      player.setScale(0.2);
+      player.setCollideWorldBounds(true);
 
-      // //  Player physics properties
-      // player.setCollideWorldBounds(true);
+      this.anims.create({
+        key: 'left',
+        frames: this.anims.generateFrameNumbers('ship1', { start: 11, end: 18 }),
+        frameRate: 60,
+        repeat: -1
+      });
+
+      // this.anims.create({
+      //   key: 'left_back',
+      //   frames: this.anims.generateFrameNumbers('ship1', { start: 11, end: 18 }).reverse(),
+      //   frameRate: 60,
+      //   repeat: -1
+      // });
+
+      this.anims.create({
+        key: 'right',
+        frames: this.anims.generateFrameNumbers('ship1', { start: 1, end: 10 }),
+        frameRate: 60,
+        repeat: 0
+      });
 
       //  Input Events
       cursors = this.input.keyboard.createCursorKeys();
@@ -72,6 +94,30 @@
     const BgSpeed = 0.5;
 
     function update() {
+      if (cursors.left.isDown) {
+        player.setVelocityX(-1 * PlayerSpeed);
+        if (!player.anims.currentFrame || player.anims.currentAnim.key !== 'left' || player.anims.currentFrame.index < 8) {
+          player.anims.play('left', true);
+        } else {
+          player.anims.stop('left');
+        }
+      }
+      else if (cursors.right.isDown) {
+        player.setVelocityX(PlayerSpeed);
+        if (!player.anims.currentFrame || player.anims.currentAnim.key !== 'right' || player.anims.currentFrame.index < 10) {
+          player.anims.play('right', true);
+        } else {
+          player.anims.stop('right');
+        }
+      } else {
+        player.setVelocityX(0);
+        
+        if (player.anims.currentAnim) {
+          player.anims.restart();
+        }
+        player.setFrame(0);
+      }
+
       this.bg.tilePositionY -= BgSpeed;
       this.bgComet1.tilePositionY -= 2;
       this.bgComet1.tilePositionX -= 0.02;
