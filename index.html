@@ -48,7 +48,7 @@
       this.load.image('bgComet3', 'assets/bg_comet_3.png');
       this.load.image('bgComet4', 'assets/bg_comet_4.png');
 
-      this.load.spritesheet('ship1', 'assets/ship1.png', { frameWidth: 810, frameHeight: 825 });
+      this.load.spritesheet('ship1', 'assets/ship1.png', { frameWidth: 100, frameHeight: 102 });
     }
 
     function create() {
@@ -60,7 +60,7 @@
       this.bgComet4 = this.add.tileSprite(0, 0, screenWidth, screenHeight, 'bgComet4').setOrigin(0);
 
       player = this.physics.add.sprite(500, 700, 'ship1');
-      player.setScale(0.2);
+      // player.setScale(0.2);
       player.setCollideWorldBounds(true);
 
       this.anims.create({
