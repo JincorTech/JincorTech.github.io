@@ -64,9 +64,16 @@
 
       this.anims.create({
         key: 'left',
-        frames: this.anims.generateFrameNumbers('ship1', { start: 10, end: 18 }),
+        frames: this.anims.generateFrameNumbers('ship1', { start: 11, end: 18 }),
         frameRate: 60,
-        repeat: 0
+        repeat: -1
+      });
+
+      this.anims.create({
+        key: 'left_back',
+        frames: this.anims.generateFrameNumbers('ship1', { start: 18, end: 11 }),
+        frameRate: 60,
+        repeat: -1
       });
 
       this.anims.create({
@@ -88,19 +95,35 @@
     function update() {
       if (cursors.left.isDown) {
         player.setVelocityX(-160);
-        console.log('!!!', player.anims.currentFrame);
-        if (player.anims.currentFrame && player.anims.currentFrame.index === 9) {
-          player.setFrame(18);
-        } else {
+        // player.setFrame(18)
+        if (!player.anims.currentFrame || player.anims.currentFrame.index < 8) {
           player.anims.play('left', true);
+        } else {
+          player.anims.stop('left');
         }
+        
+        console.log('!!! CUR', player.anims);
+        // console.log('!!!', player.anims.currentFrame);
+        // if (player.anims.currentFrame && player.anims.currentFrame.index === 9) {
+        //   // player.setFrame(18);
+        //   // player.anims.stop();
+        //   console.log('!!!', player.anims.currentFrame);
+        // } else {
+        //   player.anims.play('left', true);
+        // }
       }
       else if (cursors.right.isDown) {
         player.setVelocityX(160);
-        player.anims.play('right', true);
+        // player.anims.play('right', true);
+        player.setFrame(9);
       } else {
         player.setVelocityX(0);
+        
+        if (player.anims.currentAnim) {
+          player.anims.restart();
+        }
         player.setFrame(0);
+        // player.anims.restart();
       }
 
       this.bg.tilePositionY -= BgSpeed;
