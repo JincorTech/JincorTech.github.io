@@ -51,6 +51,12 @@
       this.load.spritesheet('ship1', 'assets/ship1.png', { frameWidth: 130, frameHeight: 132 });
     }
 
+    const leftStartFrame = 11;
+    const leftEndFrame = 18;
+
+    const rightStartFrame = 1;
+    const rightEndFrame = 10;
+
     function create() {
       this.bg = this.add.tileSprite(0, 0, screenWidth, screenHeight, 'space').setOrigin(0);
       this.bgMoon = this.add.tileSprite(screenWidth / 2 - 256, -256, 513, 512, 'moon').setOrigin(0);
@@ -65,21 +71,28 @@
 
       this.anims.create({
         key: 'left',
-        frames: this.anims.generateFrameNumbers('ship1', { start: 11, end: 18 }),
+        frames: this.anims.generateFrameNumbers('ship1', { start: leftStartFrame, end: leftEndFrame }),
         frameRate: 30,
         repeat: -1
       });
 
-      // this.anims.create({
-      //   key: 'left_back',
-      //   frames: this.anims.generateFrameNumbers('ship1', { start: 11, end: 18 }).reverse(),
-      //   frameRate: 60,
-      //   repeat: -1
-      // });
+      this.anims.create({
+        key: 'left_back',
+        frames: this.anims.generateFrameNumbers('ship1', { start: leftStartFrame, end: leftEndFrame }).reverse(),
+        frameRate: 30,
+        repeat: 1
+      });
 
       this.anims.create({
         key: 'right',
-        frames: this.anims.generateFrameNumbers('ship1', { start: 1, end: 10 }),
+        frames: this.anims.generateFrameNumbers('ship1', { start: rightStartFrame, end: rightEndFrame }),
+        frameRate: 30,
+        repeat: -1
+      });
+
+      this.anims.create({
+        key: 'right_back',
+        frames: this.anims.generateFrameNumbers('ship1', { start: rightStartFrame, end: rightEndFrame }).reverse(),
         frameRate: 30,
         repeat: -1
       });
@@ -88,7 +101,7 @@
       cursors = this.input.keyboard.createCursorKeys();
     }
 
-    const PlayerSpeed = 700;
+    const PlayerSpeed = 800;
     const PlayerRotationSpeed = 3;
     const PlayerRotationAngle = 10;
     const BgSpeed = 0.5;
@@ -111,11 +124,15 @@
         }
       } else {
         player.setVelocityX(0);
-        
-        if (player.anims.currentAnim) {
-          player.anims.restart();
+        if (leftStartFrame < player.frame.name && player.frame.name <= leftEndFrame) {
+          player.anims.play('left_back', true);
+        } else if (rightStartFrame < player.frame.name && player.frame.name <= rightEndFrame) {
+          player.anims.play('right_back', true);
+        } else {
+          player.anims.stop('left_back');
+          player.anims.stop('right_back');
+          player.setFrame(0);
         }
-        player.setFrame(0);
       }
 
       this.bg.tilePositionY -= BgSpeed;
